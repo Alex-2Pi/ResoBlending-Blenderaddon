@@ -1,8 +1,26 @@
+# ResoBlending – Blender Add-on for Resonite
+
+**ResoBlending** is an experimental Blender add-on that aims to bridge  
+**Resonite ↔ Blender** using **ResoniteLink (WebSocket / JSON API)**.
+
+The goal of this project is to enable **live or semi-live data exchange**
+between Resonite worlds and Blender scenes for development, prototyping,
+and tooling purposes.
+
+⚠️ **Project status:** early development / proof of concept  
+This add-on is **not production-ready** and may change structure at any time.
+
+---
+
+
+
+
+
+
 # Note: project in development phase
 
 Currently, the project is not yet usable.
 
-## ResoBlending-Blenderaddon
 
 
 
