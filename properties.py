@@ -1,3 +1,8 @@
+# properties.py
+# addon state
+import bpy
+
+
 def register_properties():
     bpy.types.Scene.socket_host = bpy.props.StringProperty(
         name="Host",
@@ -20,3 +25,10 @@ def register_properties():
         name="Status",
         default="Disconnected"
     )
+
+
+def unregister_properties():
+    del bpy.types.Scene.socket_host
+    del bpy.types.Scene.socket_port
+    del bpy.types.Scene.socket_connected
+    del bpy.types.Scene.socket_status
