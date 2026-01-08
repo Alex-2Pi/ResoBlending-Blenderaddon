@@ -1,7 +1,8 @@
 # operators.py
 # Blender logic layer
 import bpy
-from . import socket_client
+import bpy
+from .socket_client import start_client, stop_client, pop_message
 
 
 def socket_timer():
