@@ -1,39 +1,99 @@
 import bpy
 
+# ------------------ PROPERTIES ------------------
 
-class HelloWorldPanel(bpy.types.Panel):
-    """Creates a Panel in the View3D > Sidebar"""
-    bl_label = "Mój Panel"
-    bl_idname = "VIEW3D_PT_my_custom_panel"
+def register_properties():
+    bpy.types.Scene.socket_host = bpy.props.StringProperty(
+        name="Host",
+        default="127.0.0.1"
+    )
+
+    bpy.types.Scene.socket_port = bpy.props.IntProperty(
+        name="Port",
+        default=5000,
+        min=1,
+        max=65535
+    )
+
+    bpy.types.Scene.socket_connected = bpy.props.BoolProperty(
+        name="Connected",
+        default=False
+    )
+
+    bpy.types.Scene.socket_status = bpy.props.StringProperty(
+        name="Status",
+        default="Disconnected"
+    )
+
+# ------------------ OPERATORS ------------------
+
+class MY_OT_connect(bpy.types.Operator):
+    bl_idname = "my.socket_connect"
+    bl_label = "Connect"
+
+    def execute(self, context):
+        scene = context.scene
+        scene.socket_connected = True
+        scene.socket_status = "Connected"
+        return {'FINISHED'}
+
+
+class MY_OT_disconnect(bpy.types.Operator):
+    bl_idname = "my.socket_disconnect"
+    bl_label = "Disconnect"
+
+    def execute(self, context):
+        scene = context.scene
+        scene.socket_connected = False
+        scene.socket_status = "Disconnected"
+        return {'FINISHED'}
+
+# ------------------ PANEL ------------------
+
+class VIEW3D_PT_socket_ui(bpy.types.Panel):
+    bl_label = "Resonite_Connection"
+    bl_idname = "VIEW3D_PT_socket_ui"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = 'MyTools'  # nazwa zakładki w N-panelu
+    bl_category = 'ResoBlending'
 
     def draw(self, context):
         layout = self.layout
-        layout.label(text="Hello Blender!")
-        layout.operator("mesh.primitive_cube_add", text="Dodaj Cube")
-        
-        obj = context.object
+        scene = context.scene
 
-        row = layout.row()
-        row.label(text="Hello world!", icon='WORLD_DATA')
+        layout.prop(scene, "socket_host")
+        layout.prop(scene, "socket_port")
 
-        row = layout.row()
-        row.label(text="Active object is: " + obj.name)
-        row = layout.row()
-        row.prop(obj, "name")
+        if scene.socket_connected:
+            layout.operator("my.socket_disconnect", icon='CANCEL')
+        else:
+            layout.operator("my.socket_connect", icon='LINKED')
 
-        row = layout.row()
-        row.operator("mesh.primitive_cube_add")
+        box = layout.box()
+        icon = 'CHECKMARK' if scene.socket_connected else 'ERROR'
+        box.label(text=scene.socket_status, icon=icon)
 
+# ------------------ REGISTER ------------------
+
+classes = (
+    MY_OT_connect,
+    MY_OT_disconnect,
+    VIEW3D_PT_socket_ui,
+)
 
 def register():
-    bpy.utils.register_class(HelloWorldPanel)
-
+    for cls in classes:
+        bpy.utils.register_class(cls)
+    register_properties()
 
 def unregister():
-    bpy.utils.unregister_class(HelloWorldPanel)
+    for cls in reversed(classes):
+        bpy.utils.unregister_class(cls)
+
+    del bpy.types.Scene.socket_host
+    del bpy.types.Scene.socket_port
+    del bpy.types.Scene.socket_connected
+    del bpy.types.Scene.socket_status
 
 
 if __name__ == "__main__":
