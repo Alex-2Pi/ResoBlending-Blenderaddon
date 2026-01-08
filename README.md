@@ -1,5 +1,7 @@
 # Note: project in development phase
 
+Currently, the project is not yet usable.
+
 ## ResoBlending-Blenderaddon
 
 
