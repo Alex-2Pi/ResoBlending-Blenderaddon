@@ -1,4 +1,4 @@
-#Note: project in development phase
+# Note: project in development phase
 
 ## ResoBlending-Blenderaddon
 
