@@ -1,4 +1,6 @@
-# ResoBlending-Blenderaddon
+#Note: project in development phase
+
+## ResoBlending-Blenderaddon
 
 
 
